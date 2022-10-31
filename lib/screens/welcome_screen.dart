@@ -2,6 +2,7 @@ import 'package:chat_app/constants.dart';
 import 'package:chat_app/screens/login_screen.dart';
 import 'package:chat_app/screens/registration_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:chat_app/components/rounded_button.dart';
 
 class WelcomeScreen extends StatefulWidget {
   static const String id = 'WelcomeScreen';
@@ -45,6 +46,8 @@ class _WelcomeScreenState extends State<WelcomeScreen>
   void dispose() {
     super.dispose();
     imgCtr.dispose();
+    bgCtr.dispose();
+    txtCtr.dispose();
   }
 
   @override
@@ -84,49 +87,16 @@ class _WelcomeScreenState extends State<WelcomeScreen>
             SizedBox(
               height: 48.0,
             ),
-            Padding(
-              padding: EdgeInsets.symmetric(vertical: 16.0),
-              child: Material(
-                elevation: 5.0,
-                color: primary1,
-                borderRadius: BorderRadius.circular(30.0),
-                child: MaterialButton(
-                  onPressed: () {
-                    //Go to login screen.
-                    Navigator.pushNamed(context, LoginScreen.id);
-                  },
-                  minWidth: 200.0,
-                  height: 42.0,
-                  child: Text(
-                    'Log In',
-                    style: TextStyle(
-                      color: text1,
-                    ),
-                  ),
-                ),
-              ),
+            RoundedButton(
+              title: 'Log In',
+              color: primary1,
+              onClick: () => Navigator.pushNamed(context, LoginScreen.id),
             ),
-            Padding(
-              padding: EdgeInsets.symmetric(vertical: 16.0),
-              child: Material(
-                color: primary2,
-                borderRadius: BorderRadius.circular(30.0),
-                elevation: 5.0,
-                child: MaterialButton(
-                  onPressed: () {
-                    //Go to registration screen.
-                    Navigator.pushNamed(context, RegistrationScreen.id);
-                  },
-                  minWidth: 200.0,
-                  height: 42.0,
-                  child: Text(
-                    'Register',
-                    style: TextStyle(
-                      color: text1,
-                    ),
-                  ),
-                ),
-              ),
+            RoundedButton(
+              title: 'Register',
+              color: primary2,
+              onClick: () =>
+                  Navigator.pushNamed(context, RegistrationScreen.id),
             ),
           ],
         ),

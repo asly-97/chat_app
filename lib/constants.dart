@@ -18,8 +18,26 @@ const kMessageContainerDecoration = BoxDecoration(
   ),
 );
 
-//Colors
+const kTextFieldDecoration = InputDecoration(
+  hintText: 'Enter your hint in here',
+  hintStyle: TextStyle(
+    color: text2,
+  ),
+  contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
+  border: OutlineInputBorder(
+    borderRadius: BorderRadius.all(Radius.circular(32.0)),
+  ),
+  enabledBorder: OutlineInputBorder(
+    borderSide: BorderSide(color: primary1, width: 1.0),
+    borderRadius: BorderRadius.all(Radius.circular(32.0)),
+  ),
+  focusedBorder: OutlineInputBorder(
+    borderSide: BorderSide(color: accent, width: 2.0),
+    borderRadius: BorderRadius.all(Radius.circular(32.0)),
+  ),
+);
 
+//Colors
 const Color background1 = Color(0xFF20232b);
 const Color background2 = Color(0xFF15171c);
 const Color background3 = Color(0xFF000000);
