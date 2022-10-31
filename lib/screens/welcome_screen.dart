@@ -21,9 +21,18 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
           children: <Widget>[
             Row(
               children: <Widget>[
-                Container(
-                  child: Image.asset('images/logo.png'),
-                  height: 60.0,
+                Hero(
+                  tag: 'login',
+                  child: Container(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Image.asset(
+                        'images/logo.png',
+                        color: accent,
+                      ),
+                    ),
+                    height: 60.0,
+                  ),
                 ),
                 Text(
                   'Chat App',
