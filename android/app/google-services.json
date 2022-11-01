@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "702484297798",
+    "project_id": "flutter-chat-app-97ac7",
+    "storage_bucket": "flutter-chat-app-97ac7.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:702484297798:android:5c5f53ccddbcc909d57247",
+        "android_client_info": {
+          "package_name": "com.asly.chat_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "702484297798-em1d4ieth8rbc32ljifor2dbkoj2s3jr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBRePyMlnzTcaOSJuUYyDUwHSFJKyF-nws"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "702484297798-em1d4ieth8rbc32ljifor2dbkoj2s3jr.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
