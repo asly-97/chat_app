@@ -31,6 +31,14 @@ class _ChatScreenState extends State<ChatScreen> {
     }
   }
 
+  void getStreamMessages() async {
+    await for (var snapshot in _firestore.collection('messages').snapshots()) {
+      for (var doc in snapshot.docs) {
+        print(doc.data());
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -41,8 +49,9 @@ class _ChatScreenState extends State<ChatScreen> {
               icon: Icon(Icons.close),
               onPressed: () async {
                 //Implement logout functionality
-                await _auth.signOut();
-                Navigator.pop(context);
+                //await _auth.signOut();
+                //Navigator.pop(context);
+                getStreamMessages();
               }),
         ],
         title: Text('⚡️Chat'),
