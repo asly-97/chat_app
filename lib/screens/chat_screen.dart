@@ -51,7 +51,7 @@ class _ChatScreenState extends State<ChatScreen> {
                 //Implement logout functionality
                 //await _auth.signOut();
                 //Navigator.pop(context);
-                getStreamMessages();
+                //getStreamMessages();
               }),
         ],
         title: Text('⚡️Chat'),
@@ -62,6 +62,31 @@ class _ChatScreenState extends State<ChatScreen> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
+            StreamBuilder(
+              stream: _firestore.collection('messages').snapshots(),
+              builder: (context, asyncSnapshot) {
+                if (!asyncSnapshot.hasData) {
+                  return Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
+                List<Widget> listWidgets = [];
+                var snapshot = asyncSnapshot.data;
+                for (var message in snapshot!.docs) {
+                  String sender = message.get('sender');
+                  String msgTxt = message.get('msg');
+                  listWidgets.add(Text(
+                    '"$msgTxt" from "$sender"',
+                    style: TextStyle(
+                      color: text1,
+                    ),
+                  ));
+                }
+                return Column(
+                  children: listWidgets,
+                );
+              },
+            ),
             Container(
               decoration: kMessageContainerDecoration,
               child: Row(
@@ -69,6 +94,7 @@ class _ChatScreenState extends State<ChatScreen> {
                 children: <Widget>[
                   Expanded(
                     child: TextField(
+                      controller: TextEditingController(text: message),
                       style: TextStyle(
                         color: text1,
                       ),
@@ -80,11 +106,14 @@ class _ChatScreenState extends State<ChatScreen> {
                     ),
                   ),
                   TextButton(
-                    onPressed: () {
+                    onPressed: () async {
                       //Implement send functionality.
-                      _firestore.collection('messages').add({
+                      await _firestore.collection('messages').add({
                         'msg': message,
                         'sender': user?.email,
+                      });
+                      setState(() {
+                        message = '';
                       });
                     },
                     child: Text(
