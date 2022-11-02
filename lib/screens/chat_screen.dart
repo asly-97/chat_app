@@ -3,6 +3,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:chat_app/constants.dart';
 
+final FirebaseAuth _auth = FirebaseAuth.instance;
+final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
 class ChatScreen extends StatefulWidget {
   static const String id = 'ChatScreen';
   @override
@@ -10,8 +13,6 @@ class ChatScreen extends StatefulWidget {
 }
 
 class _ChatScreenState extends State<ChatScreen> {
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   User? user;
 
   String message = '';
@@ -49,44 +50,19 @@ class _ChatScreenState extends State<ChatScreen> {
               icon: Icon(Icons.close),
               onPressed: () async {
                 //Implement logout functionality
-                //await _auth.signOut();
-                //Navigator.pop(context);
-                //getStreamMessages();
+                await _auth.signOut();
+                Navigator.pop(context);
               }),
         ],
         title: Text('⚡️Chat'),
-        backgroundColor: Colors.lightBlueAccent,
+        backgroundColor: primary2,
       ),
       body: SafeArea(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            StreamBuilder(
-              stream: _firestore.collection('messages').snapshots(),
-              builder: (context, asyncSnapshot) {
-                if (!asyncSnapshot.hasData) {
-                  return Center(
-                    child: CircularProgressIndicator(),
-                  );
-                }
-                List<Widget> listWidgets = [];
-                var snapshot = asyncSnapshot.data;
-                for (var message in snapshot!.docs) {
-                  String sender = message.get('sender');
-                  String msgTxt = message.get('msg');
-                  listWidgets.add(Text(
-                    '"$msgTxt" from "$sender"',
-                    style: TextStyle(
-                      color: text1,
-                    ),
-                  ));
-                }
-                return Column(
-                  children: listWidgets,
-                );
-              },
-            ),
+            Expanded(child: MessageBubblesBuilder()),
             Container(
               decoration: kMessageContainerDecoration,
               child: Row(
@@ -126,6 +102,84 @@ class _ChatScreenState extends State<ChatScreen> {
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class MessageBubblesBuilder extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder(
+      stream: _firestore.collection('messages').snapshots(),
+      builder: (context, asyncSnapshot) {
+        if (!asyncSnapshot.hasData) {
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+
+        List<MessageBubble> messageBubbles = [];
+
+        var snapshot = asyncSnapshot.data;
+
+        for (var message in snapshot!.docs) {
+          String messageSender = message.get('sender');
+          String messageText = message.get('msg');
+
+          messageBubbles.add(
+            MessageBubble(
+              sender: messageSender,
+              message: messageText,
+            ),
+          );
+        }
+        return Padding(
+          padding: const EdgeInsets.symmetric(vertical: 8.0),
+          child: ListView(
+            children: messageBubbles,
+          ),
+        );
+      },
+    );
+  }
+}
+
+class MessageBubble extends StatelessWidget {
+  final String sender;
+  final String message;
+
+  MessageBubble({required this.sender, required this.message});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 15),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          Text(
+            sender,
+            style: TextStyle(
+              color: text2,
+            ),
+          ),
+          Material(
+            elevation: 5,
+            borderRadius: BorderRadius.circular(20),
+            color: primary1,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+              child: Text(
+                message,
+                style: TextStyle(
+                  color: text1,
+                  fontSize: 18,
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
