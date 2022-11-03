@@ -1,4 +1,4 @@
-import 'package:chat_app/components/bubbke.dart';
+import 'package:chat_app/components/bubble.dart';
 import 'package:chat_app/screens/welcome_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -125,7 +125,7 @@ class MessageBubblesBuilder extends StatelessWidget {
 
         var snapshot = asyncSnapshot.data;
 
-        for (var message in snapshot!.docs.reversed) {
+        for (var message in snapshot!.docs) {
           String messageSender = message.get('sender');
           String messageText = message.get('msg');
 
@@ -139,7 +139,6 @@ class MessageBubblesBuilder extends StatelessWidget {
         }
 
         return ListView(
-          reverse: true,
           children: messageBubbles,
         );
       },
@@ -159,20 +158,29 @@ class MessageBubble extends StatelessWidget {
 
   Map<bool, Color> counterpart = {false: primary1, true: primary2};
 
+  bool isFirstSenderMessage = false;
+
   MessageBubble(
       {required this.sender, required this.message, required this.isMe}) {
-    if (!isMe) {
-      if (lastSender != null && lastSender != sender) {
-        lastSenderState = !lastSenderState;
-      }
-      counterpartColor = counterpart[lastSenderState]!;
-      lastSender = sender;
-      //print(counterpartColor);
+    if (!isMe && lastSender != null && lastSender != sender) {
+      lastSenderState = !lastSenderState;
     }
+    counterpartColor = counterpart[lastSenderState]!;
+
+    isFirstSenderMessage = lastSender == null || sender != lastSender;
+
+    lastSender = sender;
   }
 
   @override
   Widget build(BuildContext context) {
-    return Bubble(content: message);
+    return Bubble(
+      isFirst: isFirstSenderMessage,
+      title: sender,
+      content: message,
+      backgroundColor: isMe ? accent : counterpartColor,
+      contentColor: isMe ? text3 : text1,
+      toRight: isMe,
+    );
   }
 }

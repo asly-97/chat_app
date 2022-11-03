@@ -10,6 +10,8 @@ class Bubble extends StatelessWidget {
   Color contentColor;
   Color titleColor;
 
+  late BorderRadius _borderRadius;
+  final double _radius = 20;
   Bubble({
     this.title = '',
     this.titleColor = text2,
@@ -18,27 +20,44 @@ class Bubble extends StatelessWidget {
     this.isFirst = false,
     this.backgroundColor = primary1,
     this.contentColor = text1,
-  });
+  }) {
+    //Border radius
+    if (isFirst) {
+      if (toRight) {
+        _borderRadius =
+            BorderRadius.circular(_radius).copyWith(topRight: Radius.zero);
+      } else {
+        _borderRadius =
+            BorderRadius.circular(_radius).copyWith(topLeft: Radius.zero);
+      }
+    } else {
+      _borderRadius = BorderRadius.circular(_radius);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 15),
+      padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 15),
       child: Column(
         crossAxisAlignment:
             toRight ? CrossAxisAlignment.end : CrossAxisAlignment.start,
         children: [
-          Text(
-            title,
-            style: TextStyle(
-              color: titleColor,
+          Visibility(
+            visible: isFirst,
+            child: Padding(
+              padding: const EdgeInsets.only(top: 8.0),
+              child: Text(
+                title,
+                style: TextStyle(
+                  color: titleColor,
+                ),
+              ),
             ),
           ),
           Material(
             elevation: 5,
-            borderRadius: toRight
-                ? BorderRadius.circular(20).copyWith(topRight: Radius.zero)
-                : BorderRadius.circular(20).copyWith(topLeft: Radius.zero),
+            borderRadius: _borderRadius,
             color: backgroundColor,
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
