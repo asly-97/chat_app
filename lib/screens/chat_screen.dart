@@ -45,7 +45,7 @@ class _ChatScreenState extends State<ChatScreen> {
                 Navigator.pop(context);
               }),
         ],
-        title: Text('⚡️Chat'),
+        title: Text('Simple Chat App'),
         backgroundColor: primary2,
       ),
       body: SafeArea(
@@ -83,9 +83,12 @@ class _ChatScreenState extends State<ChatScreen> {
                         message = '';
                       });
                     },
-                    child: Text(
-                      'Send',
-                      style: kSendButtonTextStyle,
+                    child: RotatedBox(
+                      quarterTurns: 3,
+                      child: Icon(
+                        Icons.send,
+                        color: accent,
+                      ),
                     ),
                   ),
                 ],
