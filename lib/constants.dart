@@ -51,3 +51,4 @@ const Color accent = Color(0xFFf2fc89);
 
 const Color text1 = Colors.white70;
 const Color text2 = Colors.grey;
+const Color text3 = Colors.black87;

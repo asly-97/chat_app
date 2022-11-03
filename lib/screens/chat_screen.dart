@@ -1,3 +1,4 @@
+import 'package:chat_app/screens/welcome_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -6,8 +7,6 @@ import 'package:chat_app/constants.dart';
 final FirebaseAuth _auth = FirebaseAuth.instance;
 final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 User? loggedInUser;
-
-ScrollController scrollController = ScrollController();
 
 class ChatScreen extends StatefulWidget {
   static const String id = 'ChatScreen';
@@ -44,7 +43,11 @@ class _ChatScreenState extends State<ChatScreen> {
               onPressed: () async {
                 //Implement logout functionality
                 await _auth.signOut();
-                Navigator.pop(context);
+                if (Navigator.canPop(context)) {
+                  Navigator.pop(context);
+                } else {
+                  Navigator.pushNamed(context, WelcomeScreen.id);
+                }
               }),
         ],
         title: Text('Simple Chat App'),
@@ -148,9 +151,24 @@ class MessageBubble extends StatelessWidget {
   final String message;
   //used to differentiate the messages of the current user from the counterpart
   final bool isMe;
+  late Color counterpartColor;
+
+  static String? lastSender;
+  static bool lastSenderState = false;
+
+  Map<bool, Color> counterpart = {false: primary1, true: primary2};
 
   MessageBubble(
-      {required this.sender, required this.message, required this.isMe});
+      {required this.sender, required this.message, required this.isMe}) {
+    if (!isMe) {
+      if (lastSender != null && lastSender != sender) {
+        lastSenderState = !lastSenderState;
+      }
+      counterpartColor = counterpart[lastSenderState]!;
+      lastSender = sender;
+      //print(counterpartColor);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -171,13 +189,13 @@ class MessageBubble extends StatelessWidget {
             borderRadius: isMe
                 ? BorderRadius.circular(20).copyWith(topRight: Radius.zero)
                 : BorderRadius.circular(20).copyWith(topLeft: Radius.zero),
-            color: isMe ? primary1 : primary2,
+            color: isMe ? accent : counterpartColor,
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
               child: Text(
                 message,
                 style: TextStyle(
-                  color: text1,
+                  color: isMe ? text3 : text1,
                   fontSize: 18,
                 ),
               ),
