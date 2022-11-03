@@ -7,6 +7,8 @@ final FirebaseAuth _auth = FirebaseAuth.instance;
 final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 User? loggedInUser;
 
+ScrollController scrollController = ScrollController();
+
 class ChatScreen extends StatefulWidget {
   static const String id = 'ChatScreen';
   @override
@@ -78,6 +80,7 @@ class _ChatScreenState extends State<ChatScreen> {
                       await _firestore.collection('messages').add({
                         'msg': message,
                         'sender': loggedInUser?.email,
+                        'created_at': DateTime.now(),
                       });
                       setState(() {
                         message = '';
@@ -105,7 +108,8 @@ class MessageBubblesBuilder extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
-      stream: _firestore.collection('messages').snapshots(),
+      stream:
+          _firestore.collection('messages').orderBy('created_at').snapshots(),
       builder: (context, asyncSnapshot) {
         if (!asyncSnapshot.hasData) {
           return Center(
@@ -129,12 +133,10 @@ class MessageBubblesBuilder extends StatelessWidget {
             ),
           );
         }
-        return Padding(
-          padding: const EdgeInsets.symmetric(vertical: 8.0),
-          child: ListView(
-            children: messageBubbles,
-            reverse: true,
-          ),
+
+        return ListView(
+          reverse: true,
+          children: messageBubbles,
         );
       },
     );
