@@ -1,3 +1,4 @@
+import 'package:chat_app/components/bubbke.dart';
 import 'package:chat_app/screens/welcome_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -172,37 +173,6 @@ class MessageBubble extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 15),
-      child: Column(
-        crossAxisAlignment:
-            isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
-        children: [
-          Text(
-            sender,
-            style: TextStyle(
-              color: text2,
-            ),
-          ),
-          Material(
-            elevation: 5,
-            borderRadius: isMe
-                ? BorderRadius.circular(20).copyWith(topRight: Radius.zero)
-                : BorderRadius.circular(20).copyWith(topLeft: Radius.zero),
-            color: isMe ? accent : counterpartColor,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-              child: Text(
-                message,
-                style: TextStyle(
-                  color: isMe ? text3 : text1,
-                  fontSize: 18,
-                ),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
+    return Bubble(content: message);
   }
 }
