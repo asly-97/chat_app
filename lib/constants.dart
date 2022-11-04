@@ -7,19 +7,17 @@ const kSendButtonTextStyle = TextStyle(
 );
 
 const kMessageTextFieldDecoration = InputDecoration(
-  hintStyle: TextStyle(
-    color: text1,
-  ),
-  contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
-  hintText: 'Type your message here...',
-  border: InputBorder.none,
-);
-
-const kMessageContainerDecoration = BoxDecoration(
-  border: Border(
-    top: BorderSide(color: accent, width: 2.0),
-  ),
-);
+    hintStyle: TextStyle(
+      color: text1,
+    ),
+    contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
+    hintText: 'Aa',
+    filled: true,
+    fillColor: background2,
+    border: OutlineInputBorder(
+      borderSide: BorderSide.none,
+      borderRadius: BorderRadius.all(Radius.circular(20)),
+    ));
 
 const kTextFieldDecoration = InputDecoration(
   hintText: 'Enter your hint in here',

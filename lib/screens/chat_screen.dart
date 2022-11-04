@@ -52,7 +52,7 @@ class _ChatScreenState extends State<ChatScreen> {
               }),
         ],
         title: Text('Simple Chat App'),
-        backgroundColor: primary2,
+        backgroundColor: primary1,
       ),
       body: SafeArea(
         child: Column(
@@ -61,7 +61,10 @@ class _ChatScreenState extends State<ChatScreen> {
           children: <Widget>[
             Expanded(child: MessageBubblesBuilder()),
             Container(
-              decoration: kMessageContainerDecoration,
+              padding: EdgeInsets.symmetric(
+                vertical: 10,
+                horizontal: 15,
+              ),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
@@ -136,6 +139,7 @@ class MessageBubblesBuilder extends StatelessWidget {
         }
 
         return ListView(
+          padding: EdgeInsets.only(bottom: 10),
           children: messageBubbles,
         );
       },
