@@ -148,12 +148,31 @@ class MessageBubble extends StatelessWidget {
   final String message;
   //used to differentiate the messages of the current user from the counterpart
   final bool isMe;
-  late Color counterpartColor;
-
   static String? lastSender;
+
   static bool lastSenderState = false;
 
-  Map<bool, Color> counterpart = {false: primary1, true: primary2};
+  //late Color counterpartColor;
+  //Map<bool, Color> counterpart = {false: primary1, true: primary2};
+  Set<ColorSwatch<int>> colorList = {
+    Colors.orangeAccent,
+    Colors.blue,
+    Colors.pinkAccent,
+    Colors.green,
+    Colors.brown,
+    Colors.purpleAccent,
+    Colors.yellow,
+    Colors.cyan,
+    Colors.red,
+    Colors.lightGreen
+  };
+  static int nextColorIndex = 0;
+  Color nextColor() {
+    if (nextColorIndex == colorList.length) {
+      nextColorIndex = 0;
+    }
+    return colorList.elementAt(nextColorIndex++);
+  }
 
   bool isFirstSenderMessage = false;
 
@@ -162,7 +181,7 @@ class MessageBubble extends StatelessWidget {
     if (!isMe && lastSender != null && lastSender != sender) {
       lastSenderState = !lastSenderState;
     }
-    counterpartColor = counterpart[lastSenderState]!;
+    //counterpartColor = counterpart[lastSenderState]!;
 
     isFirstSenderMessage = lastSender == null || sender != lastSender;
 
@@ -174,8 +193,9 @@ class MessageBubble extends StatelessWidget {
     return Bubble(
       isFirst: isFirstSenderMessage,
       title: sender,
+      titleColor: isMe ? text2 : nextColor(),
       content: message,
-      backgroundColor: isMe ? accent : counterpartColor,
+      backgroundColor: isMe ? accent : primary2,
       contentColor: isMe ? text3 : text1,
       toRight: isMe,
     );
