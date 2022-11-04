@@ -90,12 +90,9 @@ class _ChatScreenState extends State<ChatScreen> {
                         message = '';
                       });
                     },
-                    child: RotatedBox(
-                      quarterTurns: 3,
-                      child: Icon(
-                        Icons.send,
-                        color: accent,
-                      ),
+                    child: Icon(
+                      Icons.send,
+                      color: accent,
                     ),
                   ),
                 ],

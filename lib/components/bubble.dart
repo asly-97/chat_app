@@ -12,6 +12,8 @@ class Bubble extends StatelessWidget {
 
   late BorderRadius _borderRadius;
   final double _radius = 20;
+  final double _sideRadius = 12;
+
   Bubble({
     this.title = '',
     this.titleColor = text2,
@@ -22,16 +24,22 @@ class Bubble extends StatelessWidget {
     this.contentColor = text1,
   }) {
     //Border radius
+    _borderRadius = BorderRadius.circular(_radius);
+    if (toRight) {
+      _borderRadius = _borderRadius.copyWith(
+          bottomRight: Radius.circular(_sideRadius),
+          topRight: Radius.circular(_sideRadius));
+    } else {
+      _borderRadius = _borderRadius.copyWith(
+          bottomLeft: Radius.circular(_sideRadius),
+          topLeft: Radius.circular(_sideRadius));
+    }
     if (isFirst) {
       if (toRight) {
-        _borderRadius =
-            BorderRadius.circular(_radius).copyWith(topRight: Radius.zero);
+        _borderRadius = _borderRadius.copyWith(topRight: Radius.zero);
       } else {
-        _borderRadius =
-            BorderRadius.circular(_radius).copyWith(topLeft: Radius.zero);
+        _borderRadius = _borderRadius.copyWith(topLeft: Radius.zero);
       }
-    } else {
-      _borderRadius = BorderRadius.circular(_radius);
     }
   }
 
